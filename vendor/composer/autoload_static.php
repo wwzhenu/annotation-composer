@@ -30,7 +30,7 @@ class ComposerStaticInita678904f8c31c7626b9e6d74ce95e694
 
     public static function getInitializer(ClassLoader $loader)
     {
-        // 通过call_user_func + 闭包bind方法，为实例的private属性赋值
+        // 通过Closure::bind，为实例的private属性赋值
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInita678904f8c31c7626b9e6d74ce95e694::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInita678904f8c31c7626b9e6d74ce95e694::$prefixDirsPsr4;

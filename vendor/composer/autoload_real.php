@@ -38,8 +38,10 @@ class ComposerAutoloaderInita678904f8c31c7626b9e6d74ce95e694
         if ($useStaticLoader) {
             require_once __DIR__ . '/autoload_static.php';
             // 初始化loader属性
+            // \Composer\Autoload\ComposerStaticInita678904f8c31c7626b9e6d74ce95e694::getInitializer($loader) 返回了一个匿名函数，所以通过call_user_func调用
+            // 也可以以如下方式调用： (\Composer\Autoload\ComposerStaticInita678904f8c31c7626b9e6d74ce95e694::getInitializer($loader))()
+            // 此匿名函数修改了 $loader中的私有属性  使用了 \Closure::bind以达到修改私有属性的目的
             call_user_func(\Composer\Autoload\ComposerStaticInita678904f8c31c7626b9e6d74ce95e694::getInitializer($loader));
-//            var_dump($loader);
         } else {
             $map = require __DIR__ . '/autoload_namespaces.php';
             foreach ($map as $namespace => $path) {

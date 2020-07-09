@@ -43,7 +43,46 @@ namespace Composer\Autoload;
 class ClassLoader
 {
     // PSR-4
+    // $prefixLengthsPsr4指定了顶级命名空间的字符长度N
+    // $prefixDirsPsr4 指定了顶级命名空间的目录(可有多个)D
+    // 顶级命名空间下的子命名空间，会将子命名空间的前N个字符替换为D,然后寻找子命名空间.php
+    // 例  'Psr\\Log\\' => 8  标识 Psr\Log\ 顶级命名空间长度为8
+    // 'Psr\\Log\\' =>
+    //    array (
+    //    0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+    //    )  标识可在 __DIR__ . '/..' . '/psr/log/Psr/Log' 目录下寻找文件，若第一个未匹配则匹配下一个
+    // Psr\log\example  会将前8个字符替换为  __DIR__ . '/..' . '/psr/log/Psr/Log'
+    // 然后拼接 example.php , 最后结果为  __DIR__ . '/..' . '/psr/log/Psr/Log'.'/example.php' 若为匹配到文件则匹配下一个
+    // 如果同时有Psr顶级空间是如何处理的呢？
+    // Psr\log\example会以此匹配Psr\log  Psr两个顶级命名空间，具体实现为 findFileWithExtension方法
+    /**
+     * @var array PSR-4 命名空间映射 带有长度的前缀
+     *  array (
+    'P' =>
+    array (
+    'Psr\\Log\\' => 8,
+    ),
+    'M' =>
+    array (
+    'Monolog\\' => 8,
+    ),
+    );
+     */
     private $prefixLengthsPsr4 = array();
+
+    /**
+     * @var array 带有目录的前缀
+     * array (
+    'Psr\\Log\\' =>
+    array (
+    0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+    ),
+    'Monolog\\' =>
+    array (
+    0 => __DIR__ . '/..' . '/monolog/monolog/src/Monolog',
+    ),
+    );
+     */
     private $prefixDirsPsr4 = array();
     private $fallbackDirsPsr4 = array();
 

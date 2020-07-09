@@ -29,7 +29,11 @@ function loadTest1($class){
         require_once 'b.php';
     }
 }
-
+(Closure::bind(function ()use($a){
+    $a->b = '123123132';
+},null,test::class))();
+$a->echoB();
+echo "\n";
 call_user_func(Closure::bind(function ()use($a){
     $a->b = '123123132';
 },null,test::class));
