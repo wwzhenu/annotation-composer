@@ -374,19 +374,21 @@ class ClassLoader
     public function findFile($class)
     {
         // class map lookup
+        // 首先查找 classMap
         if (isset($this->classMap[$class])) {
             return $this->classMap[$class];
         }
         if ($this->classMapAuthoritative || isset($this->missingClasses[$class])) {
             return false;
         }
+        // 从缓存中获取
         if (null !== $this->apcuPrefix) {
             $file = apcu_fetch($this->apcuPrefix.$class, $hit);
             if ($hit) {
                 return $file;
             }
         }
-
+        // 查找.php文件
         $file = $this->findFileWithExtension($class, '.php');
 
         // Search for Hack files if we are running on HHVM
@@ -409,11 +411,15 @@ class ClassLoader
     private function findFileWithExtension($class, $ext)
     {
         // PSR-4 lookup
+        // 把 \ 转换为 /
+        // Psr\Log\example Psr/Log/example.php
         $logicalPathPsr4 = strtr($class, '\\', DIRECTORY_SEPARATOR) . $ext;
-
+        
+        // 首字母匹配
         $first = $class[0];
         if (isset($this->prefixLengthsPsr4[$first])) {
             $subPath = $class;
+            // 从右侧依次匹配 Psr\Log\example 依次匹配 Psr\Log 、Psr，匹配到文件即返回
             while (false !== $lastPos = strrpos($subPath, '\\')) {
                 $subPath = substr($subPath, 0, $lastPos);
                 $search = $subPath . '\\';

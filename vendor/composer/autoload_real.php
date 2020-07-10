@@ -30,7 +30,7 @@ class ComposerAutoloaderInita678904f8c31c7626b9e6d74ce95e694
         self::$loader = $loader = new \Composer\Autoload\ClassLoader();
         // 注销 ComposerAutoloaderInita678904f8c31c7626b9e6d74ce95e694类中的loadClassLoader方法作为 __autoload的实现
         spl_autoload_unregister(array('ComposerAutoloaderInita678904f8c31c7626b9e6d74ce95e694', 'loadClassLoader'));
-        // 上边几行实际只把ClassLoader.php加载，为什么不直接将 ClassLoader.php 加载？
+        // 上边代码实际上只ClassLoader.php文件加载，为什么不直接 require __DIR__ . '/ClassLoader.php';  ？
         // 为了避免有相同命名空间 Composer\Autoload\ClassLoader  在之后自动加载时加载错误文件
 
         //5.6版本及以上 未定义HHVM_VERSION  非zend loader文件   加载静态loader  要加载的class中，所有方法都是静态方法
